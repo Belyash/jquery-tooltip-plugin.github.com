@@ -1,0 +1,149 @@
+.i-tooltip {
+  background:#ffffff;
+  -webkit-box-shadow:0 0 10px rgba(0,0,0,0.5);
+  -moz-box-shadow:0 0 10px rgba(0,0,0,0.5);
+  -o-box-shadow:0 0 10px rgba(0,0,0,0.5);
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
+  font:normal 12px / 18px Tahoma;
+  display:none;
+  margin:-8px 0 0 8px;
+  max-width:300px;
+  position:absolute;
+  top:0;
+  z-index:100;
+}
+.i-tooltip:after, .ie7 .i-tooltip .after {
+  border-color:transparent #ffffff transparent transparent;
+  border-style:solid;
+  border-width:5px 5px 5px 0;
+  content:"";
+  display:block;
+  height:0;
+  position:absolute;
+  right:100%;
+  top:8px;
+}
+.i-tooltip:before, .ie7 .i-tooltip .before {
+  border-color:transparent #cccccc transparent transparent;
+  border-style:solid;
+  border-width:6px 6px 6px 0;
+  content:"";
+  display:block;
+  height:0;
+  position:absolute;
+  right:100%;
+  top:7px;
+}
+.i-tooltip_left { margin-left:-8px; }
+.i-tooltip_left:after, .ie7 .i-tooltip_left .after {
+  border-width:5px 0 5px 5px;
+  border-color:transparent transparent transparent #ffffff;
+  left:100%;
+  right:auto;
+}
+.i-tooltip_left:before, .ie7 .i-tooltip_left .before {
+  border-width:6px 0 6px 6px;
+  border-color:transparent transparent transparent #cccccc;
+  left:100%;
+  right:auto;
+}
+.i-tooltip_top { margin-top:8px; }
+.i-tooltip_top:after, .ie7 .i-tooltip_top .after {
+  bottom:8px;
+  top:auto;
+}
+.i-tooltip_top:before, .ie7 .i-tooltip_top .before {
+  bottom:7px;
+  top:auto;
+}
+.i-tooltip_vertical { margin:8px 0 0 -8px; }
+.i-tooltip_vertical.i-tooltip_top { margin:-8px 0 0 -8px; }
+.i-tooltip_vertical:after, .ie7 .i-tooltip_vertical .after {
+  border-color:transparent transparent #ffffff transparent;
+  border-width:0 5px 5px 5px;
+  left:8px;
+  right:auto;
+  top:-5px;
+}
+.i-tooltip_vertical:before, .ie7 .i-tooltip_vertical .before {
+  border-color:transparent transparent #cccccc transparent;
+  border-width:0 6px 6px 6px;
+  left:7px;
+  right:auto;
+  top:-6px;
+}
+.i-tooltip_vertical.i-tooltip_top:after, .ie7 .i-tooltip_vertical.i-tooltip_top .after {
+  border-color:#ffffff transparent transparent transparent;
+  border-width:5px 5px 0 5px;
+  top:100%;
+}
+.i-tooltip_vertical.i-tooltip_top:before, .ie7 .i-tooltip_vertical.i-tooltip_top .before {
+  border-color:#cccccc transparent transparent transparent;
+  border-width:6px 6px 0 6px;
+  top:100%;
+}
+.i-tooltip_vertical.i-tooltip_left { margin:8px 0 0 8px; }
+.i-tooltip_vertical.i-tooltip_left:after, .ie7 .i-tooltip_vertical.i-tooltip_left .after {
+  left:auto;
+  right:8px;
+}
+.i-tooltip_vertical.i-tooltip_left:before, .ie7 .i-tooltip_vertical.i-tooltip_left .after {
+  left:auto;
+  right:7px;
+}
+.i-tooltip__content {
+  min-height:8px;
+  padding:10px;
+  position:relative;
+}
+.i-tooltip__close {
+  background:url("/_images/s-elements.png") -21px -140px no-repeat;
+  cursor:pointer;
+  height:8px;
+  filter:1;
+  opacity:0.5;
+  position:absolute;
+  right:5px;
+  top:5px;
+  -moz-transition:all .2s ease-out;
+  -webkit-transition:all .2s ease-out;
+  -o-transition:all .2s ease-out;
+  transition:all .2s ease-out;
+  width:8px;
+}
+.i-tooltip__close:hover {
+  filter:1;
+  opacity:1;
+}
+.i-tooltip_hover .i-tooltip__close { display:none; }
+.ie7 .i-tooltip, .ie8 .i-tooltip { border:1px solid #cccccc; }
+.ie7 .i-tooltip { z-index:expression(runtimeStyle.zIndex = 1,insertAdjacentHTML('afterBegin', '<nobr class=before></nobr><nobr class=after></nobr>')); }
+.i-tooltip_red-close .i-tooltip__close { background-position:-41px -140px; }
+.hidden { display:none; }
+.b-tooltip, .b-tooltip-vertical {
+  border-bottom:1px dotted #336699;
+  color:#336699;
+  cursor:pointer;
+  text-decoration:none;
+}
+.b-help {
+  background:url('/_images/s-elements.png') no-repeat -3px -74px;
+  cursor:pointer;
+  display:inline-block;
+  height:10px;
+  width:10px;
+  margin:0 0 0 4px;
+  position:relative;
+  top:1px;
+}
+.b-infoSqr {
+  background:url(/bitrix/components/custom/products.deposits/templates/.default/images/deposits_sprite.png) 0 -19px;
+  width:12px;
+  height:12px;
+  cursor:pointer;
+  display:inline-block;
+  margin:0 0 0 4px;
+  position:relative;
+  top:1px;
+}
+.b-infoSqr:hover { background-position:0 -31px; }
