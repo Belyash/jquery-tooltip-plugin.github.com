@@ -1,7 +1,7 @@
 /*
  *   jQuery Tooltip Plugin
- *   jquery.tooltips.js
- *   jquery.tooltips.css
+ *   jquery.tooltip.js
+ *   jquery.tooltip.css
  *
  *   Example:
  *      HTML:
