@@ -11,74 +11,74 @@
  *      $('.selector').tooltip();
  *
  */
-if(typeof Object.create !== 'function') {
-    Object.create = function( obj ) {
-        function F(){}
+if (typeof Object.create !== 'function') {
+    Object.create = function (obj) {
+        function F () {}
         F.prototype = obj;
         return new F();
     }
 }
 
-(function($, windwow, undefined) {
+(function ($, windwow, undefined) {
     var Tooltip = {
-        showed: false, // Флаг состояния тултипа
-
-        init: function( options, elem ) {
+        showed: false, 
+        
+        init: function (options, elem) {
             var self = this;
 
             self.options =  $.extend({}, $.fn.tooltip.options, options);
-            self.$tooltip = options.$tooltip; // ссылка на тултип для текущего вызова плагина
+            self.$tooltip = options.$tooltip;
             self.elem = elem;
-            self.$elem = $( elem );
+            self.$elem = $(elem);
 
             self.bindEvent();
         },
 
-        bindEvent: function() {
+        bindEvent: function () {
             var self = this,
                 $window = $(window);
 
-            if(self.options.event === 'click') {
-                self.$elem.bind('click.tooltip', function( e ) {
+            if (self.options.event === 'click') {
+                self.$elem.bind('click.tooltip', function (e) {
                     $window.trigger('hidetooltips');
                     self.show();
 
                     e.stopPropagation();
                 });
 
-                self.$tooltip.bind("click.tooltip", function( e ){
+                self.$tooltip.bind("click.tooltip", function (e){
                     e.stopPropagation();
                 });
 
-                self.$tooltip.$close.bind("click.tooltip", function( e ) {
+                self.$tooltip.$close.bind("click.tooltip", function (e) {
                     self.hide();
 
                     e.stopPropagation();
                 });
 
-                $window.bind("click.tooltip", function( e ) {
+                $window.bind("click.tooltip", function (e) {
                     self.hide();
 
                     e.stopPropagation();
-                }).bind("resize.tooltip scroll.tooltip", function(){
-                        if(self.showed) {
+                }).bind("resize.tooltip scroll.tooltip", function (){
+                        if (self.showed) {
                             self.locate();
                         }
                     }).bind('hidetooltips', function(){
                         self.hide();
                     });
             }
-            else if(self.options.event === 'hover') {
+            else if (self.options.event === 'hover') {
                 self.$tooltip.addClass(self.options.sHtmlClass + '_hover');
-                self.$elem.bind('mouseover.tooltip', function( e ) {
+                self.$elem.bind('mouseover.tooltip', function (e) {
                     self.show();
-                }).bind('mouseout.tooltip', function( e ) {
+                }).bind('mouseout.tooltip', function (e) {
                         self.hide();
                     });
             }
         },
 
-        show: function() {
+        show: function () {
             var self = this,
                 sHtml = self.$elem.find('span.hidden:first').html();
 
@@ -86,13 +86,13 @@ if(typeof Object.create !== 'function') {
             self.$tooltip.$content.html(sHtml);
 
             self.$elem.addClass(self.options.sActiveClass);
-            // Сначала показываем тултайп (получаем доступ к блочной модели - ширина, высота)...
-            self.$tooltip.css({ display:'block' });
-            // после чего пересчитываем координаты
+            
+            self.$tooltip.css({display: 'block'});
+            
             self.locate();
         },
 
-        hide: function() {
+        hide: function () {
             var self = this;
 
             self.showed = false;
@@ -100,7 +100,7 @@ if(typeof Object.create !== 'function') {
             self.$elem.removeClass(self.options.sActiveClass);
         },
 
-        locate: function() {
+        locate: function () {
             var self = this,
                 top = self.$elem.offset().top,
                 left = self.$elem.offset().left,
@@ -109,49 +109,40 @@ if(typeof Object.create !== 'function') {
                 bIsTheHeight,
                 bIsTheWidth;
 
-            // Помещается справа?
             bIsTheWidth = $window.width() > left + self.$tooltip.width();
-            // Помещается снизу?
             bIsTheHeight = $window.height() + $window.scrollTop() > top + self.$tooltip.height();
 
-            // Горизонтальный тултип (стрелочка справа или слева от блока подсказки)
-            if( !options.vertical && !self.$elem.data('vertical') ) {
+            if (!options.vertical && !self.$elem.data('vertical')) {
                 self.$tooltip.removeClass(options.sHtmlClass + '_vertical');
 
-                if( bIsTheWidth ) {
+                if (bIsTheWidth) {
                     left += self.$elem.outerWidth();
                     self.$tooltip.removeClass(options.sHtmlClass + '_left');
-                }
-                else {
+                } else {
                     left = left - self.$tooltip.width();
                     self.$tooltip.addClass(options.sHtmlClass + '_left');
                 }
 
-                if( bIsTheHeight ) {
+                if (bIsTheHeight) {
                     self.$tooltip.removeClass(options.sHtmlClass + "_top");
-                }
-                else {
+                } else {
                     top = top - self.$tooltip.height() + self.$elem.outerHeight();
                     self.$tooltip.addClass(options.sHtmlClass + "_top");
                 }
-            }
-            // Вертикальный тултип (стрелочка сверху или снизу от блока подсказки)
-            else {
+            } else {
                 self.$tooltip.addClass(options.sHtmlClass + '_vertical');
 
-                if( bIsTheWidth ) {
+                if (bIsTheWidth) {
                     self.$tooltip.removeClass(options.sHtmlClass + '_left');
-                }
-                else {
+                } else {
                     left -= self.$tooltip.width() - self.$elem.outerWidth();
                     self.$tooltip.addClass(options.sHtmlClass + '_left');
                 }
 
-                if( bIsTheHeight ) {
+                if (bIsTheHeight) {
                     top += self.$elem.outerHeight();
                     self.$tooltip.removeClass(options.sHtmlClass + "_top")
-                }
-                else {
+                } else {
                     top = top - self.$tooltip.height();
                     self.$tooltip.addClass(options.sHtmlClass + "_top");
                 }
@@ -162,7 +153,7 @@ if(typeof Object.create !== 'function') {
 
     };
 
-    $.fn.tooltip = function( params ) {
+    $.fn.tooltip = function (params) {
         var options = $.extend({}, $.fn.tooltip.options, params),
             sTooltipClass = options.sHtmlClass;
 
@@ -172,20 +163,20 @@ if(typeof Object.create !== 'function') {
         options.$tooltip.$content = $('<div class="' + options.sHtmlClass + '__content"></div>').appendTo( options.$tooltip );
         options.$tooltip.$close = $('<i class="' + options.sHtmlClass + '__close"></i>').appendTo( options.$tooltip );
 
-        return this.each(function() {
-            var tooltip = Object.create( Tooltip );
+        return this.each(function () {
+            var tooltip = Object.create(Tooltip);
 
-            tooltip.init( options, this );
+            tooltip.init(options, this);
         });
     };
 
     $.fn.tooltip.options = {
         event : "click",
-        sParent: 'body div.layout:first', // селектор элемента к которому аппендится тултип
-        sHtmlClass: 'i-tooltip', // Класс туллтипа, от него наследуются все модификаторы
-        sActiveClass: 'active', // класс для элемента к которому был показан тултип, после скрытия тултипа - удаляется
-        sHtmlMod: '', // модификатор, можно добалять несколько одной строкой
-        vertical: false //
+        sParent: 'body div.layout:first',
+        sHtmlClass: 'i-tooltip',
+        sActiveClass: 'active',
+        sHtmlMod: '',
+        vertical: false
     };
 
 })(jQuery, window, undefined);
