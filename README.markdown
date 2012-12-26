@@ -1,8 +1,9 @@
-FILES:
+<h1>jQuery Tooltip Plugin</h1>
+
+<h3>Need include files:</h3>
 * jQuery
 * jquery.tooltip.js
 * jquery.tooltip.Css
 
-HOW TO USE?
-
+<h3>How to use?</h3>
 $('.selector').tooltip();
