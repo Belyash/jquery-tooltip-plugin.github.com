@@ -1,7 +1,7 @@
 /*
  *   jQuery Tooltip Plugin
- *   jquery.tooltip.js
- *   jquery.tooltip.css
+ *   jquery.tooltips.js
+ *   jquery.tooltips.css
  *
  *   Example:
  *      HTML:
@@ -11,74 +11,73 @@
  *      $('.selector').tooltip();
  *
  */
-if (typeof Object.create !== 'function') {
-    Object.create = function (obj) {
-        function F () {}
+if(typeof Object.create !== 'function') {
+    Object.create = function( obj ) {
+        function F(){}
         F.prototype = obj;
         return new F();
     }
 }
 
-(function ($, windwow, undefined) {
+(function($, windwow, undefined) {
     var Tooltip = {
-        showed: false, 
-        
-        init: function (options, elem) {
+        showed: false, // just flag
+
+        init: function( options, elem ) {
             var self = this;
 
             self.options =  $.extend({}, $.fn.tooltip.options, options);
-            self.$tooltip = options.$tooltip;
+            self.$tooltip = options.$tooltip; // link to current tooltip (need if we use init of plugin more than once)
             self.elem = elem;
-            self.$elem = $(elem);
+            self.$elem = $( elem );
 
             self.bindEvent();
         },
 
-        bindEvent: function () {
+        bindEvent: function() {
             var self = this,
                 $window = $(window);
 
-            if (self.options.event === 'click') {
-                self.$elem.bind('click.tooltip', function (e) {
+            if(self.options.event === 'click') {
+                self.$elem.bind('click.tooltip', function( e ) {
                     $window.trigger('hidetooltips');
                     self.show();
+                    return false;
+                });
 
+                self.$tooltip.bind("click.tooltip", function( e ){
                     e.stopPropagation();
                 });
 
-                self.$tooltip.bind("click.tooltip", function (e){
-                    e.stopPropagation();
-                });
-
-                self.$tooltip.$close.bind("click.tooltip", function (e) {
+                self.$tooltip.$close.bind("click.tooltip", function( e ) {
                     self.hide();
 
                     e.stopPropagation();
                 });
 
-                $window.bind("click.tooltip", function (e) {
+                $window.bind("click.tooltip", function( e ) {
+
                     self.hide();
 
-                    e.stopPropagation();
-                }).bind("resize.tooltip scroll.tooltip", function (){
-                        if (self.showed) {
+                }).bind("resize.tooltip scroll.tooltip", function(){
+                        if(self.showed) {
                             self.locate();
                         }
                     }).bind('hidetooltips', function(){
                         self.hide();
                     });
             }
-            else if (self.options.event === 'hover') {
-                self.$tooltip.addClass(self.options.sHtmlClass + '_hover');
-                self.$elem.bind('mouseover.tooltip', function (e) {
+            else if(self.options.event === 'hover') {
+                self.$tooltip.addClass(self.options.sClass + '_hover');
+                self.$elem.bind('mouseover.tooltip', function( e ) {
                     self.show();
-                }).bind('mouseout.tooltip', function (e) {
+                }).bind('mouseout.tooltip', function( e ) {
                         self.hide();
                     });
             }
         },
 
-        show: function () {
+        show: function() {
             var self = this,
                 sHtml = self.$elem.find('span.hidden:first').html();
 
@@ -86,13 +85,14 @@ if (typeof Object.create !== 'function') {
             self.$tooltip.$content.html(sHtml);
 
             self.$elem.addClass(self.options.sActiveClass);
-            
-            self.$tooltip.css({display: 'block'});
-            
+
+            /* First step: show tooltip to have the block model */
+            self.$tooltip.css({ display:'block' });
+            /* Second step: relocate tooltip */
             self.locate();
         },
 
-        hide: function () {
+        hide: function() {
             var self = this;
 
             self.showed = false;
@@ -100,7 +100,7 @@ if (typeof Object.create !== 'function') {
             self.$elem.removeClass(self.options.sActiveClass);
         },
 
-        locate: function () {
+        locate: function() {
             var self = this,
                 top = self.$elem.offset().top,
                 left = self.$elem.offset().left,
@@ -109,42 +109,46 @@ if (typeof Object.create !== 'function') {
                 bIsTheHeight,
                 bIsTheWidth;
 
-            bIsTheWidth = $window.width() > left + self.$tooltip.width();
+            /* to the right */
+            bIsTheWidth = $window.width() - 20 > left + self.$tooltip.width(); // 20 - width of vertical scrollbar of page
+            /* to the bottom */
             bIsTheHeight = $window.height() + $window.scrollTop() > top + self.$tooltip.height();
 
-            if (!options.vertical && !self.$elem.data('vertical')) {
-                self.$tooltip.removeClass(options.sHtmlClass + '_vertical');
+            /* horizontal tooltip */
+            if( !options.vertical && !self.$elem.data('vertical') ) {
+                self.$tooltip.removeClass(options.sClass + '_vertical');
 
-                if (bIsTheWidth) {
+                if( bIsTheWidth ) {
                     left += self.$elem.outerWidth();
-                    self.$tooltip.removeClass(options.sHtmlClass + '_left');
+                    self.$tooltip.removeClass(options.sClass + '_left');
                 } else {
                     left = left - self.$tooltip.width();
-                    self.$tooltip.addClass(options.sHtmlClass + '_left');
+                    self.$tooltip.addClass(options.sClass + '_left');
                 }
 
-                if (bIsTheHeight) {
-                    self.$tooltip.removeClass(options.sHtmlClass + "_top");
+                if( bIsTheHeight ) {
+                    self.$tooltip.removeClass(options.sClass + "_top");
                 } else {
                     top = top - self.$tooltip.height() + self.$elem.outerHeight();
-                    self.$tooltip.addClass(options.sHtmlClass + "_top");
+                    self.$tooltip.addClass(options.sClass + "_top");
                 }
+            /* vertical tooltip */
             } else {
-                self.$tooltip.addClass(options.sHtmlClass + '_vertical');
+                self.$tooltip.addClass(options.sClass + '_vertical');
 
-                if (bIsTheWidth) {
-                    self.$tooltip.removeClass(options.sHtmlClass + '_left');
+                if( bIsTheWidth ) {
+                    self.$tooltip.removeClass(options.sClass + '_left');
                 } else {
                     left -= self.$tooltip.width() - self.$elem.outerWidth();
-                    self.$tooltip.addClass(options.sHtmlClass + '_left');
+                    self.$tooltip.addClass(options.sClass + '_left');
                 }
 
-                if (bIsTheHeight) {
+                if( bIsTheHeight ) {
                     top += self.$elem.outerHeight();
-                    self.$tooltip.removeClass(options.sHtmlClass + "_top")
+                    self.$tooltip.removeClass(options.sClass + "_top")
                 } else {
                     top = top - self.$tooltip.height();
-                    self.$tooltip.addClass(options.sHtmlClass + "_top");
+                    self.$tooltip.addClass(options.sClass + "_top");
                 }
             }
 
@@ -153,30 +157,30 @@ if (typeof Object.create !== 'function') {
 
     };
 
-    $.fn.tooltip = function (params) {
+    $.fn.tooltip = function( params ) {
         var options = $.extend({}, $.fn.tooltip.options, params),
-            sTooltipClass = options.sHtmlClass;
+            sTooltipClass = options.sClass;
 
-        sTooltipClass += (options.sHtmlMod !== '') ? ' ' + options.sHtmlMod : '';
+        sTooltipClass += (options.sCssMod !== '') ? ' ' + options.sCssMod : '';
 
         options.$tooltip = $('<div class="' + sTooltipClass + '"></div>').appendTo( options.sParent );
-        options.$tooltip.$content = $('<div class="' + options.sHtmlClass + '__content"></div>').appendTo( options.$tooltip );
-        options.$tooltip.$close = $('<i class="' + options.sHtmlClass + '__close"></i>').appendTo( options.$tooltip );
+        options.$tooltip.$content = $('<div class="' + options.sClass + '__content"></div>').appendTo( options.$tooltip );
+        options.$tooltip.$close = $('<i class="' + options.sClass + '__close"></i>').appendTo( options.$tooltip );
 
-        return this.each(function () {
-            var tooltip = Object.create(Tooltip);
+        return this.each(function() {
+            var tooltip = Object.create( Tooltip );
 
-            tooltip.init(options, this);
+            tooltip.init( options, this );
         });
     };
 
     $.fn.tooltip.options = {
         event : "click",
-        sParent: 'body div.layout:first',
-        sHtmlClass: 'i-tooltip',
-        sActiveClass: 'active',
-        sHtmlMod: '',
-        vertical: false
+        sParent: 'body', /* parent for div of tooltip */
+        sClass: 'i-tooltip', /* CSS-class of tooltip */
+        sActiveClass: 'active', /* */
+        sCssMod: '', /* this class add to div of tooltip */
+        vertical: false /* vertical? */
     };
 
 })(jQuery, window, undefined);
