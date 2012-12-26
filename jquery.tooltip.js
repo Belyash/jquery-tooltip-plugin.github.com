@@ -60,6 +60,7 @@ if (typeof Object.create !== 'function') {
                     self.hide();
 
                 }).bind("resize.tooltip scroll.tooltip", function () {
+                        /* TODO: call locate from setTimeout() */
                         if(self.showed) {
                             self.locate();
                         }
