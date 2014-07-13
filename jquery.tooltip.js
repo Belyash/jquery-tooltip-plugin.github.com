@@ -11,6 +11,7 @@
  *      $('.selector').tooltip();
  *
  */
+
 if (typeof Object.create !== 'function') {
     Object.create = function( obj ) {
         function F(){}
@@ -19,17 +20,17 @@ if (typeof Object.create !== 'function') {
     }
 }
 
-(function ($, windwow, undefined) {
+(function ($, window, undefined) {
     var Tooltip = {
         showed: false, /* just flag */
 
-        init: function (options, elem) {
+        init: function (options, el) {
             var self = this;
 
             self.options =  $.extend({}, $.fn.tooltip.options, options);
             self.$tooltip = options.$tooltip; /* link to current tooltip (need if we use init of plugin more than once) */
-            self.elem = elem;
-            self.$elem = $( elem );
+            self.el = el;
+            self.$el = $(el);
 
             self.bindEvent();
         },
@@ -39,7 +40,7 @@ if (typeof Object.create !== 'function') {
                 $window = $(window);
 
             if (self.options.event === 'click') {
-                self.$elem.bind('click.tooltip', function (e) {
+                self.$el.bind('click.tooltip', function (e) {
                     $window.trigger('hidetooltips');
                     self.show();
                     return false;
@@ -69,7 +70,7 @@ if (typeof Object.create !== 'function') {
                     });
             } else if(self.options.event === 'hover') {
                 self.$tooltip.addClass(self.options.sClass + '_hover');
-                self.$elem.bind('mouseover.tooltip', function (e) {
+                self.$el.bind('mouseover.tooltip', function (e) {
                     self.show();
                 }).bind('mouseout.tooltip', function (e) {
                         self.hide();
@@ -79,12 +80,12 @@ if (typeof Object.create !== 'function') {
 
         show: function () {
             var self = this,
-                sHtml = self.$elem.find('span.hidden:first').html();
+                sHtml = self.$el.find('span.hidden:first').html();
 
             self.showed = true;
             self.$tooltip.$content.html(sHtml);
 
-            self.$elem.addClass(self.options.sActiveClass);
+            self.$el.addClass(self.options.sActiveClass);
 
             /* First step: show tooltip to have the block model */
             self.$tooltip.css({display: 'block'});
@@ -97,13 +98,13 @@ if (typeof Object.create !== 'function') {
 
             self.showed = false;
             self.$tooltip.hide();
-            self.$elem.removeClass(self.options.sActiveClass);
+            self.$el.removeClass(self.options.sActiveClass);
         },
 
         locate: function () {
             var self = this,
-                top = self.$elem.offset().top,
-                left = self.$elem.offset().left,
+                top = self.$el.offset().top,
+                left = self.$el.offset().left,
                 options = self.options,
                 $window = $(window),
                 bIsTheHeight,
@@ -111,15 +112,16 @@ if (typeof Object.create !== 'function') {
 
             /* to the right */
             bIsTheWidth = $window.width() - 20 > left + self.$tooltip.width(); // 20 - width of vertical scrollbar of page
+
             /* to the bottom */
             bIsTheHeight = $window.height() + $window.scrollTop() > top + self.$tooltip.height();
 
             /* horizontal tooltip */
-            if (!options.vertical && !self.$elem.data('vertical')) {
+            if (!options.vertical && !self.$el.data('vertical')) {
                 self.$tooltip.removeClass(options.sClass + '_vertical');
 
                 if (bIsTheWidth) {
-                    left += self.$elem.outerWidth();
+                    left += self.$el.outerWidth();
                     self.$tooltip.removeClass(options.sClass + '_left');
                 } else {
                     left = left - self.$tooltip.width();
@@ -129,7 +131,7 @@ if (typeof Object.create !== 'function') {
                 if (bIsTheHeight) {
                     self.$tooltip.removeClass(options.sClass + "_top");
                 } else {
-                    top = top - self.$tooltip.height() + self.$elem.outerHeight();
+                    top = top - self.$tooltip.height() + self.$el.outerHeight();
                     self.$tooltip.addClass(options.sClass + "_top");
                 }
             /* vertical tooltip */
@@ -139,12 +141,12 @@ if (typeof Object.create !== 'function') {
                 if (bIsTheWidth) {
                     self.$tooltip.removeClass(options.sClass + '_left');
                 } else {
-                    left -= self.$tooltip.width() - self.$elem.outerWidth();
+                    left -= self.$tooltip.width() - self.$el.outerWidth();
                     self.$tooltip.addClass(options.sClass + '_left');
                 }
 
                 if (bIsTheHeight) {
-                    top += self.$elem.outerHeight();
+                    top += self.$el.outerHeight();
                     self.$tooltip.removeClass(options.sClass + "_top")
                 } else {
                     top = top - self.$tooltip.height();
@@ -161,7 +163,7 @@ if (typeof Object.create !== 'function') {
         var options = $.extend({}, $.fn.tooltip.options, params),
             sTooltipClass = options.sClass;
 
-        sTooltipClass += (options.sCssMod !== '') ? ' ' + options.sCssMod : '';
+        sTooltipClass += (options.sCssMod !== "") ? " " + options.sCssMod : "";
 
         options.$tooltip = $('<div class="' + sTooltipClass + '"></div>').appendTo(options.sParent);
         options.$tooltip.$content = $('<div class="' + options.sClass + '__content"></div>').appendTo(options.$tooltip);
@@ -183,4 +185,4 @@ if (typeof Object.create !== 'function') {
         vertical: false /* vertical? */
     };
 
-}(jQuery, window, undefined));
+}(jQuery, window));
